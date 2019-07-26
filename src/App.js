@@ -32,11 +32,23 @@ const App = () => {
     <div className="app">
       {
         data !== null ?
-        <Slider>
-          {data.map(movie => (
-            <Slider.Item movie={movie} key={movie.id}>item1</Slider.Item>
-          ))}
-        </Slider>
+        <div>
+          <div style={{
+            color: 'white', 
+            left: '55px', 
+            marginTop: '10px', 
+            position: 'absolute', 
+            fontWeight: 'bold', 
+            fontSize: '18px' 
+          }}>
+            Teamfight Tactics
+          </div>
+          <Slider>
+            {data.map(movie => (
+              <Slider.Item movie={movie} key={movie.id}>item1</Slider.Item>
+            ))}
+          </Slider>
+        </div>
         :
         <div>Loading...</div>
       }
