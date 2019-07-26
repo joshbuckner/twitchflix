@@ -1,130 +1,46 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from './components/NetflixSlider'
 import './App.scss'
 
-const movies = [
-  {
-    id: 1,
-    image: '/images/slide1.jpg',
-    imageBg: '/images/slide1b.webp',
-    title: '1983'
-  },
-  {
-    id: 2,
-    image: '/images/slide2.jpg',
-    imageBg: '/images/slide2b.webp',
-    title: 'Russian doll'
-  },
-  {
-    id: 3,
-    image: '/images/slide3.jpg',
-    imageBg: '/images/slide3b.webp',
-    title: 'The rain',
-  },
-  {
-    id: 4,
-    image: '/images/slide4.jpg',
-    imageBg: '/images/slide4b.webp',
-    title: 'Sex education'
-  },
-  {
-    id: 5,
-    image: '/images/slide5.jpg',
-    imageBg: '/images/slide5b.webp',
-    title: 'Elite'
-  },
-  {
-    id: 6,
-    image: '/images/slide6.jpg',
-    imageBg: '/images/slide6b.webp',
-    title: 'Black mirror'
-  },
-  {
-    id: 1,
-    image: '/images/slide1.jpg',
-    imageBg: '/images/slide1b.webp',
-    title: '1983'
-  },
-  {
-    id: 2,
-    image: '/images/slide2.jpg',
-    imageBg: '/images/slide2b.webp',
-    title: 'Russian doll'
-  },
-  {
-    id: 3,
-    image: '/images/slide3.jpg',
-    imageBg: '/images/slide3b.webp',
-    title: 'The rain',
-  },
-  {
-    id: 4,
-    image: '/images/slide4.jpg',
-    imageBg: '/images/slide4b.webp',
-    title: 'Sex education'
-  },
-  {
-    id: 5,
-    image: '/images/slide5.jpg',
-    imageBg: '/images/slide5b.webp',
-    title: 'Elite'
-  },
-  {
-    id: 6,
-    image: '/images/slide6.jpg',
-    imageBg: '/images/slide6b.webp',
-    title: 'Black mirror'
-  },
-  {
-    id: 1,
-    image: '/images/slide1.jpg',
-    imageBg: '/images/slide1b.webp',
-    title: '1983'
-  },
-  {
-    id: 2,
-    image: '/images/slide2.jpg',
-    imageBg: '/images/slide2b.webp',
-    title: 'Russian doll'
-  },
-  {
-    id: 3,
-    image: '/images/slide3.jpg',
-    imageBg: '/images/slide3b.webp',
-    title: 'The rain',
-  },
-  {
-    id: 4,
-    image: '/images/slide4.jpg',
-    imageBg: '/images/slide4b.webp',
-    title: 'Sex education'
-  },
-  {
-    id: 5,
-    image: '/images/slide5.jpg',
-    imageBg: '/images/slide5b.webp',
-    title: 'Elite'
-  },
-  {
-    id: 6,
-    image: '/images/slide6.jpg',
-    imageBg: '/images/slide6b.webp',
-    title: 'Black mirror'
-  },
-];
+const CLIENT_ID = 'kflx12zd5s9twteaes0kfvn9tpgypw';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="app">
+const App = () => {
+  useEffect(() => {
+    const request = async () => {
+      const response = await fetch(`https://api.twitch.tv/helix/streams?game_id=513143`, {
+        method: 'GET',
+        headers: {
+          'Client-ID': CLIENT_ID
+        }
+      });
+      const json = await response.json();
+      const tft = json.data.map((user) => {
+        return {
+          id: user.id,
+          image: user.thumbnail_url.replace('{width}', '400').replace('{height}', '225'),
+          imageBg: user.thumbnail_url.replace('{width}', '848').replace('{height}', '477'),
+          title: user.user_name,
+          description: user.title
+        }
+      });
+      setData(tft);
+    };
+    request();
+  }, []);
+  const [data, setData] = useState(null);
+  return (
+    <div className="app">
+      {
+        data !== null ?
         <Slider>
-          {movies.map(movie => (
+          {data.map(movie => (
             <Slider.Item movie={movie} key={movie.id}>item1</Slider.Item>
           ))}
         </Slider>
-      </div>
-    );
-  }
-}
-
+        :
+        <div>Loading...</div>
+      }
+    </div>
+  );
+};
 export default App;
