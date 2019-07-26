@@ -6,10 +6,20 @@ const Content = ({ movie, onClose }) => (
   <div className="content">
     <div className="content__background">
       <div className="content__background__shadow" />
-      <div
+      {/*<div
         className="content__background__image"
         style={{ 'backgroundImage': `url(${movie.imageBg})` }}
-      />
+      />*/}
+      <iframe
+        title={movie.title}
+        className="content__background__image"
+        src={`https://player.twitch.tv/?channel=${movie.title}&muted=true`}
+        height="720"
+        width="1280"
+        frameborder="0"
+        scrolling="no"
+        allowfullscreen="true">
+      </iframe>
     </div>
     <div className="content__area">
       <div className="content__area__container">
